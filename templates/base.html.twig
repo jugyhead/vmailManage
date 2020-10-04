@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}vmailManage - manage your email server{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    {# <link rel="icon" type="image/x-icon" href="/'favicon.ico" /> #}
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+{% block body %}{% endblock %}
+
+<div class="header">
+    <div class="header_menu">
+        <a href="{{ path('list_domains') }}">domain</a> |
+        <a href="{{ path('list_accounts') }}">account</a> |
+        <a href="{{ path('list_aliases') }}">alias</a>
+    </div>
+    <div class="header_logon">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('logout') }}">logout</a>
+        {% endif %}
+    </div>
+</div>
+
+{% block javascripts %}{% endblock %}
+
+</body>
+</html>

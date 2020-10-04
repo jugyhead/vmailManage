@@ -1,0 +1,39 @@
+security:
+
+  encoders:
+    Symfony\Component\Security\Core\User\User: 'bcrypt'
+    App\Security\User:
+        algorithm: auto
+
+
+  providers:
+    # used to reload user from session & other features (e.g. switch_user)
+    users_in_memory:
+      memory:
+        users:
+          user: { name: user, password: '$2y$13$VIKEaQ10yUkhEmcUpIWStumIfTCX7HX4u2TBgXxgOsDUYkWmpQ.cy', roles: [ 'ROLE_USER' ] }
+          admin: { name: admin, password: '$2y$13$gbQn/s1CrKfwwdM54li.wOXCN2hOH.t6dP31VDiTXEXmde5sRUbee', roles: [ 'ROLE_ADMIN' ] }
+    #app_user_provider:
+    #    id: App\Security\UserProvider
+
+  firewalls:
+
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    main:
+      anonymous: true
+      guard:
+        authenticators: [ App\Security\LoginFormAuthenticator ]
+      logout:
+        path: app_logout
+        # where to redirect after logout
+        # target: app_any_route
+
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  access_control:
+    - { path: ^/domain, roles: ROLE_ADMIN }
+    - { path: ^/account, roles: ROLE_ADMIN }
+    - { path: ^/alias, roles: ROLE_ADMIN }
