@@ -14,12 +14,12 @@ class Account
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned": true})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=64)
      */
     private $username;
 
@@ -29,17 +29,17 @@ class Account
     private $password;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true, options={"unsigned": true, "default": 0})
      */
     private $quota = null;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true, options={"default": 0})
      */
     private $enabled = true;
 
     /**
-     * @ORM\Column(type="boolean", name="sendonly")
+     * @ORM\Column(type="boolean", name="sendonly", nullable=true, options={"default": 0})
      */
     private $send_only = false;
 

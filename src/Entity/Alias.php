@@ -14,12 +14,12 @@ class Alias
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned": true})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $source_username;
 
@@ -30,7 +30,7 @@ class Alias
     private $source_domain;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=64)
      */
     private $destination_username;
 
@@ -40,7 +40,7 @@ class Alias
     private $destination_domain;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true, options={"default": 0})
      */
     private $enabled;
 

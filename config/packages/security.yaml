@@ -2,17 +2,14 @@ security:
 
   encoders:
     Symfony\Component\Security\Core\User\User: 'bcrypt'
-    App\Security\User:
-        algorithm: auto
-
 
   providers:
     # used to reload user from session & other features (e.g. switch_user)
     users_in_memory:
       memory:
         users:
-          user: { name: user, password: '$2y$13$VIKEaQ10yUkhEmcUpIWStumIfTCX7HX4u2TBgXxgOsDUYkWmpQ.cy', roles: [ 'ROLE_USER' ] }
-          admin: { name: admin, password: '$2y$13$gbQn/s1CrKfwwdM54li.wOXCN2hOH.t6dP31VDiTXEXmde5sRUbee', roles: [ 'ROLE_ADMIN' ] }
+          admin: { name: '%env(string:ADMIN_USERNAME)%', password: '%env(string:ADMIN_PASSWORD)%', roles: [ 'ROLE_ADMIN' ] }
+
     #app_user_provider:
     #    id: App\Security\UserProvider
 
