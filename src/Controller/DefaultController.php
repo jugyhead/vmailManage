@@ -7,7 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-
+/**
+ * Class DefaultController
+ * @package App\Controller
+ * @author Andreas Bresch
+ */
 class DefaultController extends AbstractController
 {
     /**

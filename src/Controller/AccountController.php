@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 02.07.17
- * Time: 19:09
- */
 
 namespace App\Controller;
 
@@ -14,10 +8,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Account;
 
-
-
-class EditAccountController extends AbstractController
+/**
+ * Class AccountController
+ * @package App\Controller
+ * @author Andreas Bresch
+ * @author Sebastian Sieburg <sebastian@sieburg.eu>
+ */
+class AccountController extends AbstractController
 {
+
+    /**
+     * @Route("/account/", name="account_list")
+     */
+    public function list(Request $request)
+    {
+        $accounts = $this->getDoctrine()
+            ->getRepository(Account::class)
+            ->findAll();
+        return $this->render('account_list.html.twig', array('accounts' => $accounts));
+    }
+
 
     /**
      * @Route("/account/{id}", name="edit_account", requirements={"id": "\d+"})
@@ -25,17 +35,17 @@ class EditAccountController extends AbstractController
     public function edit($id, Request $request)
     {
         $account = $this->getDoctrine()
-            ->getRepository('AppBundle:Account')
+            ->getRepository(Account::class)
             ->find($id);
         if (!$account) {
-            return $this->redirectToRoute('list_accounts');
+            return $this->redirectToRoute('account_list');
         }
         return $this->handleForm($account, $request);
     }
 
 
     /**
-     * @Route("/account/new", name="edit_new_account")
+     * @Route("/account/new", name="account_new")
      */
     public function new(Request $request)
     {
@@ -44,15 +54,16 @@ class EditAccountController extends AbstractController
     }
 
     /**
-     * @Route("/account/delete/{id}", name="delete_account", requirements={"id": "\d+"})
+     * @Route("/account/delete/{id}", name="account_delete", requirements={"id": "\d+"})
      */
     public function delete($id, Request $request)
     {
         $account = $this->getDoctrine()
-            ->getRepository('AppBundle:Account')
+            ->getRepository(Account::class)
             ->find($id);
+
         if (!$account) {
-            return $this->redirectToRoute('list_accounts');
+            return $this->redirectToRoute('account_list');
         }
 
         // delete:
@@ -60,7 +71,7 @@ class EditAccountController extends AbstractController
         $em->remove($account);
         $em->flush();
 
-        return $this->redirectToRoute('list_accounts');
+        return $this->redirectToRoute('account_list');
     }
 
     /**
@@ -79,9 +90,9 @@ class EditAccountController extends AbstractController
             $em->persist($account);
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
-            return $this->redirectToRoute('list_accounts');
+            return $this->redirectToRoute('account_list');
         }
         // show the form (again):
-        return $this->render('editAccount.html.twig', array('form' => $form->createView()));
+        return $this->render('account_edit.html.twig', array('form' => $form->createView()));
     }
 }

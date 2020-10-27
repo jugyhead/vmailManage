@@ -1,54 +1,37 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 06.07.17
- * Time: 21:59
- */
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DomainRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="domains")
+ * @ORM\Table(name="domains", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Entity(repositoryClass=DomainRepository::class)
  */
 class Domain
 {
-
     /**
-     * workaround because of unsupported database-structure (foreign key not primary key)
-     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
-
-
     /**
-     *
-     * workaround because of unsupported database-structure (foreign key not primary key)
-     *
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @ORM\Id
+     * @ORM\Column(type="string", length=255)
      */
-    private $domain;
-
+    private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Account", mappedBy="domain")
+     * @ORM\OneToMany(targetEntity=Account::class, mappedBy="domain")
      */
     private $accounts;
 
     /**
-     * @ORM\OneToMany(targetEntity="Alias", mappedBy="source_domain")
+     * @ORM\OneToMany(targetEntity=Alias::class, mappedBy="source_domain")
      */
     private $aliases;
 
@@ -58,80 +41,82 @@ class Domain
         $this->aliases = new ArrayCollection();
     }
 
-
-
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
+    public function getName(): ?string
     {
-        $this->id = $id;
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Collection|Account[]
      */
-    public function getDomain()
-    {
-        return $this->domain;
-    }
-
-    /**
-     * @param mixed $domain
-     */
-    public function setDomain($domain)
-    {
-        $this->domain = $domain;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAccounts()
+    public function getAccounts(): Collection
     {
         return $this->accounts;
     }
 
-    /**
-     * @param mixed $accounts
-     */
-    public function setAccounts($accounts)
+    public function addAccount(Account $account): self
     {
-        $this->accounts = $accounts;
+        if (!$this->accounts->contains($account)) {
+            $this->accounts[] = $account;
+            $account->setDomain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccount(Account $account): self
+    {
+        if ($this->accounts->contains($account)) {
+            $this->accounts->removeElement($account);
+            // set the owning side to null (unless already changed)
+            if ($account->getDomain() === $this) {
+                $account->setDomain(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Collection|Alias[]
      */
-    public function getAliases()
+    public function getAliases(): Collection
     {
         return $this->aliases;
     }
 
-    /**
-     * @param mixed $aliases
-     */
-    public function setAliases($aliases)
+    public function addAlias(Alias $alias): self
     {
-        $this->aliases = $aliases;
+        if (!$this->aliases->contains($alias)) {
+            $this->aliases[] = $alias;
+            $alias->setSourceDomain($this);
+        }
+
+        return $this;
     }
 
+    public function removeAlias(Alias $alias): self
+    {
+        if ($this->aliases->contains($alias)) {
+            $this->aliases->removeElement($alias);
+            // set the owning side to null (unless already changed)
+            if ($alias->getSourceDomain() === $this) {
+                $alias->setSourceDomain(null);
+            }
+        }
 
-
-    /**
-     * ToDo: Schlechte Loesung! Aber sonst klappt das Speichern des Accounts nicht.
-     * @return mixed
-     */
-    public function __toString() {
-        return $this->domain;
+        return $this;
     }
-
 }

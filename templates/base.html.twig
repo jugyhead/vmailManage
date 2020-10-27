@@ -1,29 +1,61 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
     <title>{% block title %}vmailManage - manage your email server{% endblock %}</title>
     {% block stylesheets %}{% endblock %}
     {# <link rel="icon" type="image/x-icon" href="/'favicon.ico" /> #}
-    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
-{% block body %}{% endblock %}
 
-<div class="header">
-    <div class="header_menu">
-        <a href="{{ path('list_domains') }}">domain</a> |
-        <a href="{{ path('list_accounts') }}">account</a> |
-        <a href="{{ path('list_aliases') }}">alias</a>
-    </div>
-    <div class="header_logon">
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <a href="{{ path('logout') }}">logout</a>
-        {% endif %}
-    </div>
+<header class="container mt-3">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">vmailManage</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('domain_list') }}">Domains</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('account_list') }}">Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('alias_list') }}">Aliases</a>
+                </li>
+            </ul>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <ul class="navbar-nav navbar-right">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ app.user.username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarUser">
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </nav>
+
+</header>
+
+<div class="container">
+    {% block body %}{% endblock %}
 </div>
 
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    <script src="//code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+{% endblock %}
 
 </body>
 </html>

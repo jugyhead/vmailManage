@@ -1,29 +1,38 @@
-vmailManage
-===========
+# vmailManage
 
-A Symfony project created on June 29, 2017, 6:58 pm.
-
-This Symfony based code creates a webinterface that 
-helps you to manage your email server, 
-installed by this manual: https://thomas-leister.de/mailserver-unter-ubuntu-16.04/
-(Dovecot, Postfix, MySQL)
-
-For more information and an install how-to visit the wiki of 
-this 
-project https://github.com/Andreas-Bresch/vmailManage/wiki
+This project is a fork of https://github.com/Andreas-Bresch/vmailManage.
 
 ---
 
-**I started the work for a new version. It will be released in November 2018**
+vmailManage aims to provide a decent web UI for Mailsystems based on the [HOWTO by Thomas Leister](https://thomas-leister.de/mailserver-debian-buster/).
 
-Features:
-* Backend/API: 
-   * Zend Framework 3 
-   * Apigility
-   * multi-admin per domain
-   * user password change
-   * wildcard addresses
-* Frontend: 
-  * Single Page App
-  * Vue
-  * Bootsrap 4
+While most of Thomas's tutorial is appropriate for this project some changes have to be made.
+
+## Installation
+
+* Clone the repo:
+    `git clone https://github.com/jugyhead/vmailManage.git`
+* Install PHP 7.1+ and [Composer](https://getcomposer.org/download/)
+* Then:
+
+
+    $ cd vmailManage/
+    $ composer install
+    $ cp .env .env.local
+
+* Edit `.env.local` to match your database and change `APP_ENV` to `prod`.
+* Now set up your virtual host.
+
+## Configuration
+
+### CREATE TABLE statements
+
+...
+
+### Configuration modifications
+
+...
+
+## Using vmailManage
+
+...

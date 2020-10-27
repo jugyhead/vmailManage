@@ -1,53 +1,40 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 07.07.17
- * Time: 20:57
- */
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\AliasRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="aliases")
+ * @ORM\Table(name="aliases", uniqueConstraints={@ORM\UniqueConstraint(name="source_username", columns={"source_username", "source_domain_id", "destination_username", "destination_domain"})}, indexes={@ORM\Index(name="source_domain", columns={"source_domain_id"})})
+ * @ORM\Entity(repositoryClass=AliasRepository::class)
  */
 class Alias
 {
-
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $source_username;
 
-
     /**
-     * @Assert\NotBlank()
-     * @ORM\ManyToOne(targetEntity="Domain", inversedBy="aliases")
-     * @ORM\JoinColumn(name="source_domain", referencedColumnName="domain")
+     * @ORM\ManyToOne(targetEntity=Domain::class, inversedBy="aliases")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $source_domain;
 
-
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=255)
      */
     private $destination_username;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $destination_domain;
@@ -57,135 +44,68 @@ class Alias
      */
     private $enabled;
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSource_Username()
-    {
-        return $this->source_username;
-    }
-    public function getSourceUsername()
+    public function getSourceUsername(): ?string
     {
         return $this->source_username;
     }
 
-    /**
-     * @param mixed $source_username
-     */
-    public function setSource_Username($source_username)
-{
-    $this->source_username = $source_username;
-}
-    public function setSourceUsername($source_username)
+    public function setSourceUsername(string $source_username): self
     {
         $this->source_username = $source_username;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSource_Domain()
-    {
-        return $this->source_domain;
-    }
-    public function getSourceDomain()
+    public function getSourceDomain(): ?Domain
     {
         return $this->source_domain;
     }
 
-    /**
-     * @param mixed $source_domain
-     */
-    public function setSource_Domain($source_domain)
+    public function setSourceDomain(?Domain $source_domain): self
     {
         $this->source_domain = $source_domain;
-    }
-    public function setSourceDomain($source_domain)
-    {
-        $this->source_domain = $source_domain;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDestination_Username()
-    {
-        return $this->destination_username;
-    }
-    public function getDestinationUsername()
+    public function getDestinationUsername(): ?string
     {
         return $this->destination_username;
     }
 
-    /**
-     * @param mixed $destination_username
-     */
-    public function setDestination_Username($destination_username)
+    public function setDestinationUsername(string $destination_username): self
     {
         $this->destination_username = $destination_username;
-    }
-    public function setDestinationUsername($destination_username)
-    {
-        $this->destination_username = $destination_username;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDestination_Domain()
-    {
-        return $this->destination_domain;
-    }
-    public function getDestinationDomain()
+    public function getDestinationDomain(): ?string
     {
         return $this->destination_domain;
     }
 
-    /**
-     * @param mixed $destination_domain
-     */
-    public function setDestination_Domain($destination_domain)
+    public function setDestinationDomain(string $destination_domain): self
     {
         $this->destination_domain = $destination_domain;
-    }
-    public function setDestinationDomain($destination_domain)
-    {
-        $this->destination_domain = $destination_domain;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEnabled()
+    public function getEnabled(): ?bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @param mixed $enabled
-     */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
     }
-
-
-
-
 }

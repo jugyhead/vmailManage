@@ -2,46 +2,28 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Created by PhpStorm.
- * User: andy
- * Date: 02.07.17
- * Time: 19:21
- */
-
-/**
- * @ORM\Entity
- * @ORM\Table(name="accounts")
+ * @ORM\Table(name="accounts", uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username", "domain_id"})})
+ * @ORM\Entity(repositoryClass=AccountRepository::class)
  */
 class Account
 {
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=255)
      */
     private $username;
 
     /**
-     * @Assert\NotBlank()
-     * ORM\Column(type="string", length=255)
-     * @ORM\ManyToOne(targetEntity="Domain", inversedBy="accounts")
-     * ORM\ManyToOne(targetEntity="Domain")
-     * @ORM\JoinColumn(name="domain", referencedColumnName="domain")
-     */
-    private $domain;
-
-    /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $password;
@@ -49,163 +31,103 @@ class Account
     /**
      * @ORM\Column(type="integer")
      */
-    private $quota;
+    private $quota = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $enabled;
+    private $enabled = true;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", name="sendonly")
      */
-    private $sendonly;
-
-    public function __construct()
-    {
-        $this->quota = 2048;
-    }
+    private $send_only = false;
 
     /**
-     *
-     * @param $id
-     * @param $username
-     * @param $domain
-     * @param $password
-     * @param $quota
-     * @param $enabled
-     * @param $sendonly
+     * @var Domain
+     * @ORM\ManyToOne(targetEntity=Domain::class, inversedBy="accounts")
+     * @ORM\JoinColumn(nullable=false)
      */
-    public function set($id, $username, $domain, $password, $quota, $enabled, $sendonly)
-    {
-        $this->id = $id;
-        $this->username = $username;
-        $this->domain = $domain;
-        $this->password = $password;
-        $this->quota = $quota;
-        $this->enabled = $enabled;
-        $this->sendonly = $sendonly;
-    }
+    private $domain;
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @param mixed $username
-     */
-    public function setUsername($username)
+    public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDomain()
-    {
-        return $this->domain;
-    }
-
-    /**
-     * @param mixed $domain
-     */
-    public function setDomain($domain)
-    {
-        $this->domain = $domain;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
+    public function setPassword(string $password): self
     {
         if (!preg_match('/^{SHA512-CRYPT}*/', $password)) {
             $salt = substr(sha1(rand()), 0, 16);
             $password = "{SHA512-CRYPT}" . crypt($password, "$6$$salt");
         }
         $this->password = $password;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getQuota()
+    public function getQuota(): ?int
     {
         return $this->quota;
     }
 
-    /**
-     * @param mixed $quota
-     */
-    public function setQuota($quota)
+    public function setQuota(int $quota): self
     {
         $this->quota = $quota;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEnabled()
+    public function getEnabled(): ?bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @param mixed $enabled
-     */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSendonly()
+    public function getSendOnly(): ?bool
     {
-        return $this->sendonly;
+        return $this->send_only;
     }
 
-    /**
-     * @param mixed $sendonly
-     */
-    public function setSendonly($sendonly)
+    public function setSendOnly(bool $send_only): self
     {
-        $this->sendonly = $sendonly;
+        $this->send_only = $send_only;
+
+        return $this;
     }
 
+    public function getDomain(): ?Domain
+    {
+        return $this->domain;
+    }
 
+    public function setDomain(?Domain $domain): self
+    {
+        $this->domain = $domain;
 
-
-
-
+        return $this;
+    }
 }

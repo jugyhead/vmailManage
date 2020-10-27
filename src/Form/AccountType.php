@@ -1,14 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 02.07.17
- * Time: 23:36
- */
 
 namespace App\Form;
 
-use App\Entity\Account;
 use App\Entity\Domain;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,10 +9,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-
+/**
+ * Class AccountType
+ * @package App\Form
+ * @author Andreas Bresch
+ */
 class AccountType extends AbstractType
 {
 
@@ -28,14 +24,10 @@ class AccountType extends AbstractType
         $builder
             ->add('username', TextType::class)
             ->add('domain', EntityType::class, array(
-                'class' => 'AppBundle:Domain',
-                //'data_class' => Domain::class,
-                'choice_label' => 'domain',
-                //'choice_value' => 'domain',
+                'class' => Domain::class,
+                'choice_label' => 'name',
                 'placeholder' => 'Choose domain',
-                // 'data' => $options['domain']
-
-                ))
+            ))
             ->add('password', TextType::class)
             ->add('quota', IntegerType::class)
             ->add('enabled', CheckboxType::class)

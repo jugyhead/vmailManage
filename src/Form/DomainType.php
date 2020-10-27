@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 07.07.17
- * Time: 15:04
- */
 
 namespace App\Form;
 
@@ -13,17 +7,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-
-
+/**
+ * Class DomainType
+ * @package App\Form
+ * @author Andreas Bresch
+ */
 class DomainType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('domain', TextType::class)
+            ->add('name', TextType::class)
             ->add('save', SubmitType::class, array('label' => 'submit'))
         ;
     }
-
 }
