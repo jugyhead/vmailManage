@@ -23,7 +23,9 @@ class AliasType extends AbstractType
             ->add('source_username', TextType::class)
             ->add('source_domain', EntityType::class, array(
                 'class' => Domain::class,
-                'choice_label' => 'name',
+                'choice_label' => function(Domain $domain) {
+                    return $domain->getName() . ($domain->getIsAliasDomain() ? ' (alias Domain)' : '');
+                },
                 'placeholder' => 'Choose a domain',
             ))
             ->add('destination_username', TextType::class)

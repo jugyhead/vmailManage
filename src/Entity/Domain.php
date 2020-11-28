@@ -35,6 +35,11 @@ class Domain
      */
     private $aliases;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $is_alias_domain;
+
     public function __construct()
     {
         $this->accounts = new ArrayCollection();
@@ -116,6 +121,18 @@ class Domain
                 $alias->setSourceDomain(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsAliasDomain(): ?bool
+    {
+        return $this->is_alias_domain;
+    }
+
+    public function setIsAliasDomain(bool $is_alias_domain): self
+    {
+        $this->is_alias_domain = $is_alias_domain;
 
         return $this;
     }

@@ -9,6 +9,7 @@
         <thead>
         <tr>
             <th>Domain</th>
+            <th>Is alias domain</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -17,6 +18,7 @@
         {% for item in domains %}
             <tr>
                 <td>{{ item.name }}</td>
+                <td>{{ item.isAliasDomain ? "yes" : "no"}}</td>
                 <td>
                     {#
                     {% if item.accounts|length == 0 and item.aliases|length == 0 %}
@@ -33,6 +35,7 @@
         </tbody>
         <tfoot>
         <tr>
+            <td></td>
             <td></td>
             <td><a href="new">+ new</a></td>
         </tr>
